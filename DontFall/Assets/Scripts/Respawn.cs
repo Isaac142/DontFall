@@ -36,6 +36,7 @@ public class Respawn : MonoBehaviour
             GM.inGameHUD.SetActive(false);
             PCMX.canMove = false;
             PCMY.canMove = false;
+            GM.lostGame = true;
             //player.GetComponent<Renderer>().material.color = Color.green;
             //SceneManager.LoadScene("_Scene_01");
         }
@@ -48,6 +49,7 @@ public class Respawn : MonoBehaviour
             GM.inGameHUD.SetActive(false);
             PCMX.canMove = false;
             PCMY.canMove = false;
+            GM.wonGame = true;
             //player.GetComponent<Renderer>().material.color = Color.green;
             //SceneManager.LoadScene("_Scene_01");
         }

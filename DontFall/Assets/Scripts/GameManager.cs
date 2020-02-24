@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     public bool isTitleScreen;
     public bool wonGame;
+    public bool lostGame;
 
     public GameObject youWin;
     public GameObject youLost;
@@ -65,7 +66,7 @@ public class GameManager : MonoBehaviour
             youLost.SetActive(true);
             inGameHUD.SetActive(false);
         }
-        else if (!isPaused && !wonGame)
+        else if (!isPaused && !wonGame && !lostGame)
         {
             Debug.Log("Not Paused");
             timer -= Time.deltaTime;

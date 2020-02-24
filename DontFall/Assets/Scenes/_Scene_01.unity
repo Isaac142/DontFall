@@ -2693,6 +2693,7 @@ MonoBehaviour:
   pausePanel: {fileID: 897391513}
   isTitleScreen: 0
   wonGame: 0
+  lostGame: 0
   youWin: {fileID: 392774519}
   youLost: {fileID: 767223672}
   inGameHUD: {fileID: 1036155183}
