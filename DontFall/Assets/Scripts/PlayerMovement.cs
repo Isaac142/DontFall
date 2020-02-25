@@ -42,6 +42,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 verticalVelocity = currentjumpForce;
             }
+            if(Input.GetKey(KeyCode.LeftControl))
+            {
+                verticalVelocity = currentjumpForce * 1.5f;
+            }
         }
         else
         {
@@ -56,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
 
         transform.Translate(new Vector3(h, 0, v) * speed);
 
-        if(Input.GetKey(KeyCode.LeftShift) && !sprinting)
+        if(Input.GetKey(KeyCode.LeftShift) && !sprinting && controller.isGrounded)
         {
             sprinting = true;
         }
