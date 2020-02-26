@@ -5,22 +5,28 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    CharacterController controller;
-    public float verticalVelocity;
-    public float gravity = 14.0f;
-    public float currentjumpForce = 10.0f;
+    Rigidbody controller;
 
-
-    public float baseSpeed = 0.05f;
-    public float sprintSpeed = 0.1f;
     public float speed;
-    public bool sprinting = false;
+    public float baseSpeed = 15f;
+    public float sprintSpeed = 20f;
+    public bool sprinting;
+
+    public float velocity = 10f;
+
+    public bool isGrounded;
+
+    public float distanceGround = 1.2f;
+
+    public LayerMask groundLayer;
 
 
         //Calling on the CharacterController Component
     void Start()
     {
-        controller = GetComponent<CharacterController>();
+        controller = GetComponent<Rigidbody>();
+
+        sprinting = false;
 
         speed = baseSpeed;
     }
@@ -28,42 +34,27 @@ public class PlayerMovement : MonoBehaviour
     //Calling the PlayerJumping function
     void Update()
     {
-        PlayerJumping();
+        Movement();
+        Grounded();
+        Jump();
     }
 
     //Creating the player jumping, and player movement function.
     //If the player is on ground then he is able to jump, depending on the jumpforce and gravity.
-    void PlayerJumping()
+    void Movement()
     {
-        if (controller.isGrounded)
-        {
-            verticalVelocity = -gravity * Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                verticalVelocity = currentjumpForce;
-            }
-            if(Input.GetKey(KeyCode.LeftControl))
-            {
-                verticalVelocity = currentjumpForce * 1.5f;
-            }
-        }
-        else
-        {
-            verticalVelocity -= gravity * Time.deltaTime;
-        }
-
-        Vector3 moveVector = new Vector3(0, verticalVelocity, 0);
-        controller.Move(moveVector * Time.deltaTime);
-
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        transform.Translate(new Vector3(h, 0, v) * speed);
+        transform.Translate(new Vector3(h, 0, v) * speed * Time.deltaTime);
 
-        if(Input.GetKey(KeyCode.LeftShift) && !sprinting && controller.isGrounded)
+        Jump();
+
+        if (Input.GetKey(KeyCode.LeftShift) && !sprinting && isGrounded)
         {
             sprinting = true;
         }
+
         if (Input.GetKeyUp(KeyCode.LeftShift) && sprinting)
         {
             sprinting = false;
@@ -77,6 +68,37 @@ public class PlayerMovement : MonoBehaviour
         if(!sprinting)
         {
             speed = baseSpeed;
+        }
+
+    }
+
+    public void Jump()
+    {
+        //controller.AddForce(new Vector3(0, velocity, 0));
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            controller.AddForce(new Vector3(0, velocity, 0) * Time.deltaTime);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftControl) && isGrounded)
+        {
+            controller.AddForce(new Vector3(0, velocity, 0) * 2 * Time.deltaTime);
+        }
+    }
+
+    void Grounded()
+    {
+        RaycastHit hit;
+        Vector3 dir = new Vector3(0, -1, 0);
+
+        if (Physics.Raycast(transform.position, dir, out hit, distanceGround))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
         }
     }
 }
