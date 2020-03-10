@@ -20,8 +20,11 @@ public class PlayerMovement : MonoBehaviour
 
     public LayerMask groundLayer;
 
+    public Transform firingPoint;
+    public GameObject grenade;
 
-        //Calling on the CharacterController Component
+
+    //Calling on the CharacterController Component
     void Start()
     {
         controller = GetComponent<Rigidbody>();
@@ -29,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
         sprinting = false;
 
         speed = baseSpeed;
+
+        Cursor.visible = false;
     }
 
     //Calling the PlayerJumping function
@@ -60,12 +65,12 @@ public class PlayerMovement : MonoBehaviour
             sprinting = false;
         }
 
-        if(sprinting)
+        if (sprinting)
         {
             speed = sprintSpeed;
         }
 
-        if(!sprinting)
+        if (!sprinting)
         {
             speed = baseSpeed;
         }
@@ -78,12 +83,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            controller.AddForce(new Vector3(0, velocity, 0) * Time.deltaTime);
+            controller.AddForce(new Vector3(0, velocity, 0));
         }
 
         if (Input.GetKeyDown(KeyCode.LeftControl) && isGrounded)
         {
-            controller.AddForce(new Vector3(0, velocity, 0) * 2 * Time.deltaTime);
+            controller.AddForce(new Vector3(0, velocity, 0) * 2);
         }
     }
 
