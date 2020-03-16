@@ -18,7 +18,7 @@ public class GrenadeThrow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (canThrow && Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
             ThrowGrenade();
         }
@@ -26,13 +26,19 @@ public class GrenadeThrow : MonoBehaviour
 
     void ThrowGrenade()
     {
-       GameObject grenade = Instantiate(grenadePrefab, transform.position, transform.rotation);
-        Rigidbody rb = grenade.GetComponent<Rigidbody>();
-        rb.AddForce(transform.forward * throwForce, ForceMode.VelocityChange);
+        if (canThrow)
+        {
+            GameObject grenade = Instantiate(grenadePrefab, transform.position, transform.rotation);
+            Rigidbody rb = grenade.GetComponent<Rigidbody>();
+            rb.AddForce(transform.forward * throwForce, ForceMode.VelocityChange);
+            StartCoroutine(ThrowingNadeDelay());
+        }
     }
 
-    public IEnumerator WaitCoroutine()
+    public IEnumerator ThrowingNadeDelay()
     {
+        canThrow = false;
         yield return new WaitForSeconds(2f);
+        canThrow = true;
     }
 }
